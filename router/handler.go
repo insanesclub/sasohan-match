@@ -81,19 +81,19 @@ func Recommend(users *sync.Map) echo.HandlerFunc {
 // Match asks the demander to match with the provider or not.
 func Match(users *sync.Map) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		provider := new(struct {
-			User model.User `json:"user"`
+		providerInfo := new(struct {
+			User struct {
+				ID string `json:"id"`
+			} `json:"user"`
 			Post model.Post `json:"post"`
 		})
 
-		if err := c.Bind(provider); err != nil {
+		if err := c.Bind(providerInfo); err != nil {
 			return err
 		}
 
-		if u, exists := users.Load(provider.Post.UserID); exists {
-			if err := u.(*model.User).Match(provider.User, provider.Post); err != nil {
-				return err
-			}
+		if u, exists := users.Load(providerInfo.Post.UserID); exists {
+			u.(*model.User).Match(providerInfo.User.ID, providerInfo.Post)
 		}
 
 		return nil

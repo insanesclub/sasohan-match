@@ -53,10 +53,10 @@ func (u *User) send(post *Post) {
 func (u *User) Quit() { u.quit <- struct{}{} }
 
 // Match asks u to
-func (u *User) Match(provider User, post Post) error {
+func (u *User) Match(provider string, post Post) error {
 	if err := u.conn.WriteJSON(struct {
-		User User `json:"user"`
-		Post Post `json:"post"`
+		User string `json:"user"`
+		Post Post   `json:"post"`
 	}{User: provider, Post: post}); err != nil {
 		log.Println(err)
 		u.Quit()
