@@ -14,7 +14,7 @@ type Post struct {
 	UserID     string  `json:"user_id"`
 	Title      string  `json:"title"`
 	Body       string  `json:"body"`
-	CategoryID string  `json:"category_id"`
+	CategoryID int     `json:"category_id"`
 	Price      uint    `json:"price"`
 	X          float64 `json:"x"`
 	Y          float64 `json:"y"`
@@ -25,10 +25,11 @@ type Post struct {
 func (p *Post) Match(users *sync.Map, url string) error {
 	// send post information to DB server
 	postInfo := struct {
-		CategoryID string  `json:"category_id"`
+		UserID     string  `json:"user_id"`
+		CategoryID int     `json:"category_id"`
 		X          float64 `json:"x"`
 		Y          float64 `json:"y"`
-	}{CategoryID: p.CategoryID, X: p.X, Y: p.Y}
+	}{UserID: p.UserID, CategoryID: p.CategoryID, X: p.X, Y: p.Y}
 
 	buf, err := json.Marshal(postInfo)
 	if err != nil {

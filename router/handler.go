@@ -60,8 +60,8 @@ func Disconnect(users *sync.Map) echo.HandlerFunc {
 	}
 }
 
-// Match selects best users to resolve a demand.
-func Match(users *sync.Map) echo.HandlerFunc {
+// Recommend recommends best users to resolve a demand.
+func Recommend(users *sync.Map) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// get post information
 		post := new(model.Post)
@@ -72,6 +72,28 @@ func Match(users *sync.Map) echo.HandlerFunc {
 		// find matched users and send post information
 		if err := post.Match(users, "http://localhost:3000/match"); err != nil {
 			return err
+		}
+
+		return nil
+	}
+}
+
+// Match asks the demander to match with the provider or not.
+func Match(users *sync.Map) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		providerInfo := new(struct {
+			User struct {
+				ID string `json:"id"`
+			} `json:"user"`
+			Post model.Post `json:"post"`
+		})
+
+		if err := c.Bind(providerInfo); err != nil {
+			return err
+		}
+
+		if u, exists := users.Load(providerInfo.Post.UserID); exists {
+			u.(*model.User).Match(providerInfo.User.ID, providerInfo.Post)
 		}
 
 		return nil

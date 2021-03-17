@@ -29,6 +29,7 @@ func main() {
 	// register URIs
 	e.GET("/connect", router.Connect(users, upgrader))
 	e.POST("/disconnect", router.Disconnect(users))
+	e.POST("/recommend", router.Recommend(users))
 	e.POST("/match", router.Match(users))
 
 	// start server

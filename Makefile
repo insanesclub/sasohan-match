@@ -1,8 +1,8 @@
-GOCMD = go
-GOBUILD = $(GOCMD) build
-GORUN = $(GOCMD) run
+GOCMD       = go
+GOBUILD     = $(GOCMD) build
+GORUN       = $(GOCMD) run
 BINARY_FILE = bin/match
-RM = rm
+RM          = rm
 
 all: build
 
