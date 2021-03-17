@@ -8,6 +8,7 @@ Matching API server of [sasohan](https://github.com/insanesclub/sasohan)
 
 - [x] connect
 - [x] disconnect
+- [x] recommend
 - [x] match
 
 **Install**
